@@ -18,7 +18,7 @@ const App = ({ store }) => (
         <div>
           <Header />
           <Route exact path="/" component={Home} />
-          <Route path="/course-template" component={CourseTemplates} />
+          <Route path="/course-templates" component={CourseTemplates} />
           <Route path="/students" component={Students} />
         </div>
       </Router>
