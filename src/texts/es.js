@@ -1,5 +1,5 @@
 export default {
-  'Course Template': 'Plantilla de Curso',
+  'Courses': 'Cursos',
   'Home': 'Inicio',
   'Students': 'Estudiantes'
 }

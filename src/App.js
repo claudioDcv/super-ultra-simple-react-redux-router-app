@@ -8,7 +8,8 @@ import './static/style.css'
 
 import Header from './components/header'
 import Home from './views/home/Home'
-import CourseTemplates from './views/course_template/CourseTemplates'
+import Courses from './views/course/Courses'
+import Course from './views/course/Course'
 import Students from './views/student/Students'
 
 const App = ({ store }) => (
@@ -18,7 +19,8 @@ const App = ({ store }) => (
         <div>
           <Header />
           <Route exact path="/" component={Home} />
-          <Route path="/course-templates" component={CourseTemplates} />
+          <Route exact path="/courses" component={Courses} />
+          <Route path="/courses/:id" component={Course} />
           <Route path="/students" component={Students} />
         </div>
       </Router>
