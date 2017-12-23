@@ -1,4 +1,4 @@
-export function  makeActiveLink(active, cb) {
+export function  makeActiveLink(active : string, cb : Function) {
   return {
     type: 'SET_ACTIVE_LINK',
     payload: active,

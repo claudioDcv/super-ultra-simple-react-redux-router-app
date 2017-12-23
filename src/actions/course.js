@@ -1,6 +1,9 @@
 import courseApi from '../api/Course';
 
-export function loadCourseSuccess(course) {
+import { loadGiphy } from './giphy';
+
+export function loadCourseSuccess(course, dispatch) {
+  dispatch(loadGiphy(course.name))
   return {
     type: 'LOAD_COURSE_GET_SUCCESS',
     payload: course};
@@ -13,22 +16,26 @@ export function loadCourse(id) {
       payload: null,
     });
     return courseApi.get(id).then(course => {
-      dispatch(loadCourseSuccess(course));
+      dispatch(loadCourseSuccess(course, dispatch));
     }).catch(error => {
-      throw(error);
+      dispatch({
+        type: 'LOAD_COURSE_GET_ERROR',
+        payload: error,
+      });
     });
   };
 }
 
 /***********************/
 
-export function loadCoursesSuccess(courses) {
-  return {
-    type: 'LOAD_COURSE_LIST_SUCCESS',
-    payload: courses};
-}
-
 export function loadCourses() {
+
+  function loadCoursesSuccess(courses) {
+    return {
+      type: 'LOAD_COURSE_LIST_SUCCESS',
+      payload: courses};
+  }
+
   return function(dispatch) {
     dispatch({
       type: 'LOAD_COURSE_LIST_REQUEST',
@@ -37,7 +44,10 @@ export function loadCourses() {
     return courseApi.getAll().then(courses => {
       dispatch(loadCoursesSuccess(courses));
     }).catch(error => {
-      throw(error);
+      dispatch({
+        type: 'LOAD_COURSE_LIST_ERROR',
+        payload: error,
+      });
     });
   };
 }

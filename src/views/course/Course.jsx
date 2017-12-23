@@ -1,5 +1,5 @@
 import React from 'react'
-import { Breadcrumb, Container, Header, Button, Checkbox, Form, Loader, Dimmer } from 'semantic-ui-react'
+import { Breadcrumb, Image, Container, Icon, Header, Segment, Button, Checkbox, Form, Loader, Dimmer } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -16,6 +16,7 @@ class Course extends React.Component {
 
     this.state = {
       item: null,
+      error: null,
     }
   }
 
@@ -27,6 +28,7 @@ class Course extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       item: nextProps.state.courses.get,
+      error: nextProps.state.courses.get_error,
     })
   }
 
@@ -40,16 +42,24 @@ class Course extends React.Component {
   }
 
   render() {
-    const { item } = this.state
-
-    return item ? (
+    const { item, error } = this.state
+    const image = this.props.state.giphy.get.data
+    return image && item ? (
       <Container text>
         <Breadcrumb>
           <Link to="/courses" className="section">{_('Courses')}</Link>
           <Breadcrumb.Divider />
           <Breadcrumb.Section active>{item.name}</Breadcrumb.Section>
         </Breadcrumb>
-        <Header as='h2'>{_('Course')}</Header>
+        <Header as='h2'>
+          {item.gender === 'male' && (<Icon name='male' size='mini' circular />)}
+          {item.gender === 'female' && (<Icon name='female' size='mini' circular />)}
+          {item.gender === 'n/a' && (<Icon name='question' size='mini' circular />)}
+          {_('Course')} {item.name}
+        </Header>
+
+        <Image src={image[0].images['downsized'].url} size='medium' rounded />
+
         <Form>
           <Form.Field>
             <label>URL</label>
@@ -66,9 +76,17 @@ class Course extends React.Component {
         </Form>
       </Container>
     ) : (
-      <Dimmer active inverted>
-        <Loader inverted>Loading</Loader>
-      </Dimmer>
+      !error ? (
+        <Dimmer active inverted>
+          <Loader inverted>{_('Loading')}</Loader>
+        </Dimmer>
+      ) : (
+        <Container text>
+          <Segment inverted color='red' tertiary>
+            {error}
+          </Segment>
+        </Container>
+      )
     )
   }
 }

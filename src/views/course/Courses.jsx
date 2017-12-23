@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Header, Loader, Dimmer, Breadcrumb } from 'semantic-ui-react'
+import { Container, Header, Loader, Dimmer, Breadcrumb, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -25,12 +25,17 @@ class Courses extends React.Component {
         <Header as='h2'>{_('Courses')}</Header>
         {this.props.state.courses.list.results.map(e => (
           <p key={extractNumbers(e.url)}>
-            <Link to={`/courses/${extractNumbers(e.url)}`}>{e.name}</Link>
+            <Link to={`/courses/${extractNumbers(e.url)}`}>
+              {e.gender === 'male' && (<Icon name='male' size='large' circular />)}
+              {e.gender === 'female' && (<Icon name='female' size='large' circular />)}
+              {e.gender === 'n/a' && (<Icon name='question' size='large' circular />)}
+              {e.name}
+            </Link>
           </p>
         ))}
         {this.props.state.courses.list.results.length === 0 && (
           <Dimmer active inverted>
-            <Loader inverted>Loading</Loader>
+            <Loader inverted>{_('Loading')}</Loader>
           </Dimmer>
         )}
       </Container>

@@ -1,5 +1,7 @@
 export default {
+  'Course': 'Curso',
   'Courses': 'Cursos',
   'Home': 'Inicio',
-  'Students': 'Estudiantes'
+  'Students': 'Estudiantes',
+  'Loading': 'Cargando',
 }
