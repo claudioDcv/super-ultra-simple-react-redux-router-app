@@ -55,6 +55,8 @@ class Course extends React.Component {
           {item.gender === 'male' && (<Icon name='male' size='mini' circular />)}
           {item.gender === 'female' && (<Icon name='female' size='mini' circular />)}
           {item.gender === 'n/a' && (<Icon name='question' size='mini' circular />)}
+          {item.gender === 'hermaphrodite' && (<Icon name='question' size='large' circular />)}
+          {item.gender === 'none' && (<Icon name='question' size='large' circular />)}
           {_('Course')} {item.name}
         </Header>
 

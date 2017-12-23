@@ -3,8 +3,8 @@ import { apiUrl } from '../conf/config'
 const endpoint = `${apiUrl}/people`
 
 class Course {
-  static getAll() {
-    return fetch(`${endpoint}/`).then(response => {
+  static getAll(query = '1') {
+    return fetch(`${endpoint}/?page=${query}`).then(response => {
       return response.json();
     }).catch(error => {
       return error;

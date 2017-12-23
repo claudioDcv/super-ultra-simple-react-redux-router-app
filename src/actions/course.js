@@ -28,7 +28,7 @@ export function loadCourse(id) {
 
 /***********************/
 
-export function loadCourses() {
+export function loadCourses(query) {
 
   function loadCoursesSuccess(courses) {
     return {
@@ -41,7 +41,7 @@ export function loadCourses() {
       type: 'LOAD_COURSE_LIST_REQUEST',
       payload: null,
     });
-    return courseApi.getAll().then(courses => {
+    return courseApi.getAll(query).then(courses => {
       dispatch(loadCoursesSuccess(courses));
     }).catch(error => {
       dispatch({

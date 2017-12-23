@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Header, Loader, Dimmer, Breadcrumb, Icon } from 'semantic-ui-react'
+import { Container, Header, Loader, Dimmer, Breadcrumb, Icon, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -12,32 +12,63 @@ import { makeActiveLink } from '../../actions/common';
 
 class Courses extends React.Component {
 
+  constructor(props) {
+    super(props)
+
+    this.handlerGotoPage = this.handlerGotoPage.bind(this)
+  }
   componentDidMount() {
     this.props.dispatch(makeActiveLink('/courses'))
     this.props.dispatch(loadCourses())
   }
+
+  handlerGotoPage(str : string) {
+    const number = extractNumbers(str)
+    this.props.dispatch(loadCourses(number))
+  }
+
   render() {
+    const { list } = this.props.state.courses
     return (
       <Container text>
         <Breadcrumb>
           <Breadcrumb.Section active>{_('Courses')}</Breadcrumb.Section>
         </Breadcrumb>
         <Header as='h2'>{_('Courses')}</Header>
-        {this.props.state.courses.list.results.map(e => (
-          <p key={extractNumbers(e.url)}>
-            <Link to={`/courses/${extractNumbers(e.url)}`}>
-              {e.gender === 'male' && (<Icon name='male' size='large' circular />)}
-              {e.gender === 'female' && (<Icon name='female' size='large' circular />)}
-              {e.gender === 'n/a' && (<Icon name='question' size='large' circular />)}
-              {e.name}
+        {list.results.map(item => (
+          <p key={extractNumbers(item.url)}>
+            <Link to={`/courses/${extractNumbers(item.url)}`}>
+              {item.gender === 'male' && (<Icon name='male' size='large' circular />)}
+              {item.gender === 'female' && (<Icon name='female' size='large' circular />)}
+              {item.gender === 'n/a' && (<Icon name='question' size='large' circular />)}
+              {item.gender === 'hermaphrodite' && (<Icon name='question' size='large' circular />)}
+              {item.gender === 'none' && (<Icon name='question' size='large' circular />)}
+              {item.name}
             </Link>
           </p>
         ))}
-        {this.props.state.courses.list.results.length === 0 && (
+        {list.results.length === 0 && (
           <Dimmer active inverted>
             <Loader inverted>{_('Loading')}</Loader>
           </Dimmer>
         )}
+
+        <Button.Group>
+          <Button
+            onClick={() => { this.handlerGotoPage(list.previous); }}
+            labelPosition='left'
+            icon='left chevron'
+            content='Anterior'
+            disabled={!list.previous}
+          />
+          <Button
+            onClick={() => { this.handlerGotoPage(list.next); }}
+            labelPosition='right'
+            icon='right chevron'
+            content='Siguiente'
+            disabled={!list.next}
+          />
+        </Button.Group>
       </Container>
     )
   }
