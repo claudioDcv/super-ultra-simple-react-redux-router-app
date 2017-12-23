@@ -15,13 +15,13 @@ Super Ultra Simple App (React, Redux, React Router, React Semantic UI)
 
 - clonar este repo
 - ejecutar `yarn install`
-- ejecutra `yarn start`
+- ejecutar `yarn start`
 
 o
 
 - clonar este repo
-- `npm install`
-- `npm start`
+- ejecutar `yarn install`
+- ejecutar `yarn start`
 
 
 # Estructura del proyecto
