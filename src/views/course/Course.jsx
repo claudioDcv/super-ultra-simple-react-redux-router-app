@@ -1,10 +1,12 @@
 import React from 'react'
-import { Container, Header, Button, Checkbox, Form } from 'semantic-ui-react'
+import { Breadcrumb, Container, Header, Button, Checkbox, Form, Loader, Dimmer } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 import _ from '../../texts'
 import { loadCourse } from '../../actions/course'
+import { makeActiveLink } from '../../actions/common';
 
 
 class Course extends React.Component {
@@ -18,6 +20,7 @@ class Course extends React.Component {
   }
 
   componentDidMount() {
+    this.props.dispatch(makeActiveLink('/courses'))
     this.props.dispatch(loadCourse(this.props.match.params.id))
   }
 
@@ -38,13 +41,19 @@ class Course extends React.Component {
 
   render() {
     const { item } = this.state
-    return item && (
+
+    return item ? (
       <Container text>
+        <Breadcrumb>
+          <Link to="/courses" className="section">{_('Courses')}</Link>
+          <Breadcrumb.Divider />
+          <Breadcrumb.Section active>{item.name}</Breadcrumb.Section>
+        </Breadcrumb>
         <Header as='h2'>{_('Course')}</Header>
         <Form>
           <Form.Field>
-            <label>ID</label>
-            <input placeholder='First Name' value={item.id} onChange={this.handlerChange} />
+            <label>URL</label>
+            <input placeholder='First Name' value={item.url} onChange={this.handlerChange} />
           </Form.Field>
           <Form.Field>
             <label>Nombre</label>
@@ -56,12 +65,16 @@ class Course extends React.Component {
           <Button type='submit'>Submit</Button>
         </Form>
       </Container>
+    ) : (
+      <Dimmer active inverted>
+        <Loader inverted>Loading</Loader>
+      </Dimmer>
     )
   }
 }
 
 Course.propTypes = {
-  distpath: PropTypes.func,
+  dispatch: PropTypes.func,
   match: PropTypes.object,
 }
 

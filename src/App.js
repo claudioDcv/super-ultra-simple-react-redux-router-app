@@ -11,6 +11,7 @@ import Home from './views/home/Home'
 import Courses from './views/course/Courses'
 import Course from './views/course/Course'
 import Students from './views/student/Students'
+import Student from './views/student/Student'
 
 const App = ({ store }) => (
   <div>
@@ -21,7 +22,8 @@ const App = ({ store }) => (
           <Route exact path="/" component={Home} />
           <Route exact path="/courses" component={Courses} />
           <Route path="/courses/:id" component={Course} />
-          <Route path="/students" component={Students} />
+          <Route exact path="/students" component={Students} />
+          <Route path="/students/:id" component={Student} />
         </div>
       </Router>
     </Provider>

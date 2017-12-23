@@ -1,21 +1,25 @@
 import React from 'react'
 import { Container, Header } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import { makeActiveLink } from '../../actions/common';
 
 import _ from '../../texts'
 
-class Students extends React.Component {
+class Student extends React.Component {
+
+  componentDidMount() {
+    this.props.dispatch(makeActiveLink('/students'))
+  }
 
   render() {
     return (
       <Container text>
         <Header as='h2'>{_('Students')}</Header>
-        <Link to="/students/1">1</Link>
+        Student 1
       </Container>
     )
   }
 }
 
-export default connect()(Students)
+export default connect()(Student)

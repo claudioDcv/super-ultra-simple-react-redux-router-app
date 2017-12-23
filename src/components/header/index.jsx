@@ -1,86 +1,44 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Menu } from 'semantic-ui-react'
 import { withRouter } from 'react-router';
+import { connect } from 'react-redux'
+
+import { makeActiveLink } from '../../actions/common';
+
 import _ from '../../texts'
 
-const activeItems = [
-  {
-    name: '/courses',
-    match: ['^/courses$', '^/courses/[0-9]+$'],
-  },
-  {
-    name: '/students',
-    match: ['^/students$', '^/students/[0-9]+$'],
-  },
-  {
-    name: '/',
-    match: ['^/$'],
-  },
-]
 
 class Header extends Component {
   state = {}
 
   constructor(props) {
     super(props)
-    const pathname = this.props.location.pathname
-    let isFind = null
-    let active = ''
-    activeItems.forEach(e => e.match.forEach(f => {
-      const _f = new RegExp(f)
-      const result = pathname.match(_f);
-      if (result) {
-        isFind = result
-        active = e.name
-      }
-    }))
 
     this.state = {
-      pathname: '',
-      activeItem: active,
+      active: '',
     }
+    this.handleItemClick = this.handleItemClick.bind(this)
   }
 
   componentWillUnmount() {
-    this.setState({
-      pathname: '',
-      activeItem: '',
-    })
-  }
-  setActive() {
-    const pathname = this.props.location.pathname
-    let isFind = null
-    let active = ''
-    activeItems.forEach(e => e.match.forEach(f => {
-      const _f = f
-      const result = pathname.match(_f);
-      if (result) {
-        isFind = result
-        active = e.name
-      }
-    }))
 
-    this.setState({
-      pathname,
-      activeItem: active,
-    })
   }
 
   handleItemClick = (e, { name }) => {
     this.setState({ activeItem: name }, () => {
-      this.props.history.push(name);
+      this.props.dispatch(makeActiveLink(name, () => {
+        this.props.history.push(name);
+      }));
     })
   }
 
   makeMenu = (title, name) => {
-    const { activeItem } = this.state
-    if (Array.isArray(activeItem)) {
-
-    }
+    const { item } = this.props.state.active;
     return (
       <Menu.Item
         name={name}
-        active={activeItem === name}
+        active={item === name}
         onClick={this.handleItemClick}
       >
         {_(title)}
@@ -88,15 +46,7 @@ class Header extends Component {
     )
   }
 
-  makeActive() {
-    const pathname = this.props.location.pathname
-    if (pathname !== this.state.pathname) {
-      this.setActive()
-    }
-  }
-
   render() {
-    this.makeActive()
     return (
       <Menu>
         {this.makeMenu('Home', '/')}
@@ -107,4 +57,13 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+Header.propTypes = {
+  dispatch: PropTypes.func,
+  match: PropTypes.object,
+}
+
+const mapStateToProps = state => ({
+  state: state,
+});
+
+export default connect(mapStateToProps)(withRouter(Header));

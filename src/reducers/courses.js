@@ -10,6 +10,11 @@ const initialState = {
 
 export default function catReducer(state = initialState, action) {
   switch(action.type) {
+    case 'LOAD_COURSE_GET_REQUEST':
+      return {
+        ...state,
+        get: null,
+      }
     case 'LOAD_COURSE_GET_SUCCESS':
       return {
         ...state,

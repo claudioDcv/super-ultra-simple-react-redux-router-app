@@ -1,4 +1,4 @@
-const endpoint = 'http://localhost:8000/api/courses'
+const endpoint = 'https://swapi.co/api/people'
 
 class Course {
   static getAll() {
