@@ -1,4 +1,6 @@
-const endpoint = 'https://swapi.co/api/people'
+import { apiUrl } from '../conf/config'
+
+const endpoint = `${apiUrl}/people`
 
 class Course {
   static getAll() {
@@ -9,7 +11,7 @@ class Course {
     });
   }
 
-  static get(id) {
+  static get(id : number) {
     return fetch(`${endpoint}/${id}/`).then(response => {
       return response.json();
     }).catch(error => {

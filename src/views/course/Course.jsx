@@ -11,7 +11,7 @@ import { makeActiveLink } from '../../actions/common';
 
 class Course extends React.Component {
 
-  constructor(props) {
+  constructor(props : object) {
     super(props)
 
     this.state = {
