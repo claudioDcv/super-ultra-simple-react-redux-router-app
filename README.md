@@ -1,5 +1,3 @@
-# super-ultra-simple-react-redux-router-app
-
 # Aplicación creada con:
 - React (Manejo de vistas)
 - Redux (Manejador de estado)
@@ -28,7 +26,7 @@ o
 
 # Estructura del proyecto
 
-## Directorios
+## Directorios
 
 - actions: creadores de acciones para redux
 - api: peticiones a la api con fetch
@@ -40,7 +38,7 @@ o
 - utils: entre otros aqui van los helpers
 - view: sección de componentes react, pero que representan el contenedor general de una vista, aunque siguen siendo componentes React, algo importante es que estos componentes seran lons vinculadores con el `ruteo` de la app
 
-## Archivos
+## Archivos
 
 - App: generacion de la estructura de rutas para la app
 - index: conexion con el store de redux y punto de entrada de la aplicación aqui se indica el target donde iniciara la app de react en el dom
