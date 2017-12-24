@@ -4,4 +4,6 @@ export default {
   'Home': 'Inicio',
   'Students': 'Estudiantes',
   'Loading': 'Cargando',
+  'Id': 'Código',
+  'Name': 'Nombre',
 }

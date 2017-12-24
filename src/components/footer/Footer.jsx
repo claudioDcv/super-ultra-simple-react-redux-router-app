@@ -1,5 +1,6 @@
 import React from 'react'
+import { CREATE_BY } from '../../conf/config'
 
 export default () => (
-  <footer>claudio.dcv {new Date().getFullYear()}</footer>
+  <footer>{CREATE_BY} {new Date().getFullYear()}</footer>
 )

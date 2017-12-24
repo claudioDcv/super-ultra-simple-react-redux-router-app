@@ -14,4 +14,4 @@ class Giphy {
   }
 }
 
-export default Giphy;
+export default Giphy

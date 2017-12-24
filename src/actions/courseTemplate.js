@@ -1,9 +1,10 @@
-import api from '../api/CourseTemplate';
+import api from '../api/CourseTemplate'
 
 export function loadCourseTemplatesSuccess(courseTemplates) {
   return {
     type: 'LOAD_COURSE_TEMPLATE_GET_SUCCESS',
-    payload: courseTemplates};
+    payload: courseTemplates,
+  }
 }
 
 export function loadCourseTemplates() {
@@ -18,7 +19,7 @@ export function loadCourseTemplates() {
       dispatch({
         type: 'LOAD_COURSE_TEMPLATE_GET_ERROR',
         payload: error,
-      });
-    });
-  };
+      })
+    })
+  }
 }

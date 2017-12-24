@@ -3,7 +3,8 @@ import giphyApi from '../api/Giphy';
 export function loadGiphySuccess(giphy) {
   return {
     type: 'LOAD_GIPHY_GET_SUCCESS',
-    payload: giphy};
+    payload: giphy,
+  }
 }
 
 export function loadGiphy(query) {
@@ -18,7 +19,7 @@ export function loadGiphy(query) {
       dispatch({
         type: 'LOAD_GIPHY_GET_ERROR',
         payload: error,
-      });
-    });
-  };
+      })
+    })
+  }
 }

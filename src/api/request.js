@@ -1,8 +1,7 @@
 import store from '../store'
 import api from './Auth'
+import { MAX_TIME_SECOND_UPDATE_TOKEN } from '../conf/config'
 import { loadLoginSuccess, signOff } from '../actions/auth'
-
-const MAX_TIME_SECOND_UPDATE_TOKEN = 1800 // 30 minutos
 
 
 const get = (obj, xhr, resolve, reject) => {
@@ -33,7 +32,7 @@ let request = obj => {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
         let isSend = false
-        xhr.open(obj.method || "GET", obj.url);
+        xhr.open(obj.method || 'GET', obj.url);
 
         obj.headers = {
           'Access-Control-Allow-Origin': '*',
@@ -55,7 +54,7 @@ let request = obj => {
                 store.dispatch(loadLoginSuccess(d, store.dispatch))
 
                 let xhrNew = new XMLHttpRequest();
-                xhrNew.open(obj.method || "GET", obj.url);
+                xhrNew.open(obj.method || 'GET', obj.url);
                 if (!isSend) {
                   get(obj, xhrNew, resolve, reject)
                   isSend = true

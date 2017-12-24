@@ -7,7 +7,7 @@ class Course {
     return fetch(`${endpoint}/?page=${query}`).then(response => {
       return response.json();
     }).catch(error => {
-      return error;
+      return error
     });
   }
 
@@ -15,9 +15,9 @@ class Course {
     return fetch(`${endpoint}/${id}/`).then(response => {
       return response.json();
     }).catch(error => {
-      return error;
+      return error
     });
   }
 }
 
-export default Course;
+export default Course

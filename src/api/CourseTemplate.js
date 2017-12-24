@@ -12,12 +12,12 @@ class CourseTemplate {
       authorization: true,
     })
     .then(response => {
-      return response;
+      return response
     }).catch(error => {
-      return error;
+      return error
     });
   }
 
 }
 
-export default CourseTemplate;
+export default CourseTemplate

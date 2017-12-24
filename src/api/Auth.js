@@ -12,9 +12,9 @@ class Auth {
       method: 'POST',
       body: JSON.stringify(data),
     }).then(response => {
-      return response;
+      return response
     }).catch(error => {
-      return error;
+      return error
     });
   }
 
@@ -24,9 +24,9 @@ class Auth {
       method: 'POST',
       body: JSON.stringify(data),
     }).then(response => {
-      return response;
+      return response
     }).catch(error => {
-      return error;
+      return error
     });
   }
 

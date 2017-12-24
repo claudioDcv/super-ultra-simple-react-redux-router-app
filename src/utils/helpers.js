@@ -1,3 +1,5 @@
+import store from '../store'
+
 export const extractNumbers = (str : string) => {
   const numberPattern = /\d+/g;
   if (str) {
@@ -16,3 +18,5 @@ export const genderToIcon = (gender : string) => {
   }
   return options[gender] || 'question'
 }
+
+export const isLogin = () => !store.getState().auth.signOff

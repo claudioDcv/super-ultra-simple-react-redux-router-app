@@ -1,4 +1,4 @@
-import authApi from '../api/Auth';
+import authApi from '../api/Auth'
 
 
 export const signOff = (info) => ({
@@ -15,7 +15,8 @@ export function loadLoginSuccess(login, dispatch) {
   dispatch(lastTokenSetSuccess())
   return {
     type: 'LOAD_LOGIN_GET_SUCCESS',
-    payload: login};
+    payload: login,
+  }
 }
 
 export function loadLogin(data) {
@@ -25,7 +26,7 @@ export function loadLogin(data) {
       payload: null,
     });
     return authApi.login(data).then(login => {
-      dispatch(loadLoginSuccess(login, dispatch));
+      dispatch(loadLoginSuccess(login, dispatch))
     }).catch(error => {
       dispatch({
         type: 'LOAD_LOGIN_GET_ERROR',

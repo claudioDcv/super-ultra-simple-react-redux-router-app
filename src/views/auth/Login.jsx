@@ -30,14 +30,12 @@ class Login extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.state.auth.get)
     if (nextProps.state.auth.get) {
       if (nextProps.state.auth.get.token) {
-        this.props.history.push('/');
+        this.props.history.push('/')
       }
     }
   }
-
 
   handlerSubmit() {
     this.props.dispatch(loadLogin(this.state))
