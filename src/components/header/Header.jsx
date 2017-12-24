@@ -25,6 +25,22 @@ class Header extends Component {
 
   }
 
+  check = (nextProps) => {
+    if (nextProps.state.active.item !== '/login') {
+      if (nextProps.state.auth.signOff) {
+        this.handleItemClick({}, { name: '/login' })
+      }
+    }
+  }
+
+  componentWillMount() {
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.check(nextProps)
+  }
+
   handleItemClick = (e, { name }) => {
     this.setState({ activeItem: name }, () => {
       this.props.dispatch(makeActiveLink(name, () => {
@@ -47,11 +63,15 @@ class Header extends Component {
   }
 
   render() {
+    const { signOff } = this.props.state.auth
     return (
       <Menu>
-        {this.makeMenu('Home', '/')}
-        {this.makeMenu('Courses', '/courses')}
-        {this.makeMenu('Students', '/students')}
+        {signOff && this.makeMenu('Login', '/login')}
+
+        {!signOff && this.makeMenu('Home', '/')}
+        {!signOff && this.makeMenu('Courses', '/courses')}
+        {!signOff && this.makeMenu('Students', '/students')}
+        {!signOff && this.makeMenu('Course Template', '/course-templates')}
       </Menu>
     )
   }

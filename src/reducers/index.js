@@ -1,15 +1,36 @@
 import { combineReducers } from 'redux'
-import courses from './courses'
 import { active } from './common'
-
+import course from './course'
+import courseTemplate from './courseTemplate'
+import auth from './auth'
 import giphy from './giphy'
 
-const rootReducer = (state = '', action) => state;
 
 
-export default combineReducers({
+const appReducer = combineReducers({
   giphy,
-  rootReducer,
-  courses,
+  auth,
+  courseTemplate,
+  course,
   active,
 })
+
+const rootReducer = (state, action) => {
+  if (action.type === 'SIGN_OFF_SUCCESS') {
+    state = undefined
+  }
+  return appReducer(state, action)
+}
+export default rootReducer
+
+
+
+
+// export default combineReducers({
+//   giphy,
+//   rootReducer,
+//   auth,
+//   courseTemplate,
+//   course,
+//   active,
+// })

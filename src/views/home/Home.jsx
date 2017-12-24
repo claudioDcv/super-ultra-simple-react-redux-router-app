@@ -1,8 +1,17 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { Container, Header } from 'semantic-ui-react'
 import _ from '../../texts'
+import { makeActiveLink } from '../../actions/common'
+
 
 class Home extends React.Component {
+
+  componentDidMount() {
+    this.props.dispatch(makeActiveLink('/'))
+  }
+
   render() {
     return (
       <Container text>
@@ -14,4 +23,12 @@ class Home extends React.Component {
   }
 }
 
-export default Home
+Home.propTypes = {
+  dispatch: PropTypes.func,
+}
+
+const mapStateToProps = state => ({
+  state: state,
+});
+
+export default connect(mapStateToProps)(Home)

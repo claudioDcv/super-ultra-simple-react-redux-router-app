@@ -5,3 +5,14 @@ export const extractNumbers = (str : string) => {
   }
   return str
 }
+
+export const genderToIcon = (gender : string) => {
+  const options = {
+    male: 'male',
+    female: 'female',
+    'n/a': 'question',
+    hermaphrodite: 'question',
+    none: 'question',
+  }
+  return options[gender] || 'question'
+}

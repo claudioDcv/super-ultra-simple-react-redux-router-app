@@ -1,12 +1,13 @@
 import React from 'react'
-import { Breadcrumb, Image, Container, Icon, Header, Segment, Button, Checkbox, Form, Loader, Dimmer } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { Breadcrumb, Image, Container, Icon, Header, Segment, Button, Form, Loader, Dimmer } from 'semantic-ui-react'
 
 import _ from '../../texts'
 import { loadCourse } from '../../actions/course'
 import { makeActiveLink } from '../../actions/common';
+import { genderToIcon} from '../../utils/helpers'
 
 
 class Course extends React.Component {
@@ -25,14 +26,14 @@ class Course extends React.Component {
     this.props.dispatch(loadCourse(this.props.match.params.id))
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps : object) {
     this.setState({
-      item: nextProps.state.courses.get,
-      error: nextProps.state.courses.get_error,
+      item: nextProps.state.course.get,
+      error: nextProps.state.course.get_error,
     })
   }
 
-  handlerChange(event) {
+  handlerChange(event : object) {
     const name = event.target.name
     const value = event.target.value
 
@@ -52,11 +53,7 @@ class Course extends React.Component {
           <Breadcrumb.Section active>{item.name}</Breadcrumb.Section>
         </Breadcrumb>
         <Header as='h2'>
-          {item.gender === 'male' && (<Icon name='male' size='mini' circular />)}
-          {item.gender === 'female' && (<Icon name='female' size='mini' circular />)}
-          {item.gender === 'n/a' && (<Icon name='question' size='mini' circular />)}
-          {item.gender === 'hermaphrodite' && (<Icon name='question' size='large' circular />)}
-          {item.gender === 'none' && (<Icon name='question' size='large' circular />)}
+          <Icon name={genderToIcon(item.gender)} size='large' circular />
           {_('Course')} {item.name}
         </Header>
 
@@ -68,11 +65,8 @@ class Course extends React.Component {
             <input placeholder='First Name' value={item.url} onChange={this.handlerChange} />
           </Form.Field>
           <Form.Field>
-            <label>Nombre</label>
+            <label>{_('Name')}</label>
             <input placeholder='Last Name' value={item.name}  onChange={this.handlerChange} />
-          </Form.Field>
-          <Form.Field>
-            <Checkbox label='I agree to the Terms and Conditions' />
           </Form.Field>
           <Button type='submit'>Submit</Button>
         </Form>

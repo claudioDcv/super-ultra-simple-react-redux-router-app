@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import _ from '../../texts'
 import { loadCourses } from '../../actions/course'
-import { extractNumbers } from '../../utils/helpers'
+import { extractNumbers, genderToIcon } from '../../utils/helpers'
 import { makeActiveLink } from '../../actions/common';
 
 
@@ -28,7 +28,7 @@ class Courses extends React.Component {
   }
 
   render() {
-    const { list } = this.props.state.courses
+    const { list } = this.props.state.course
     return (
       <Container text>
         <Breadcrumb>
@@ -38,11 +38,7 @@ class Courses extends React.Component {
         {list.results.map(item => (
           <p key={extractNumbers(item.url)}>
             <Link to={`/courses/${extractNumbers(item.url)}`}>
-              {item.gender === 'male' && (<Icon name='male' size='large' circular />)}
-              {item.gender === 'female' && (<Icon name='female' size='large' circular />)}
-              {item.gender === 'n/a' && (<Icon name='question' size='large' circular />)}
-              {item.gender === 'hermaphrodite' && (<Icon name='question' size='large' circular />)}
-              {item.gender === 'none' && (<Icon name='question' size='large' circular />)}
+              <Icon name={genderToIcon(item.gender)} size='large' circular />
               {item.name}
             </Link>
           </p>

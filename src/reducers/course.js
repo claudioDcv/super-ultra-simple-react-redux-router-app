@@ -11,7 +11,7 @@ const initialState = {
   get_error: null,
 }
 
-export default function catReducer(state = initialState, action) {
+export default function courseReducer(state = initialState, action) {
   switch(action.type) {
     case 'LOAD_COURSE_GET_REQUEST':
       return {
