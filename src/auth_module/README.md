@@ -76,11 +76,15 @@ static getAll() {
 
 - makeLoginAction
 
+
 ```javascript
-import { makeLoginAction } from '../../utils/authController/auth_action'
+import { makeLoginAction, signOff } from '../../utils/authController/auth_action'
 
 makeLoginAction({
   username: 'admin',
   password: '1234qwer'
 })
+
+// Para cerrar sesion existe el metodo
+signOff('incluir la razón por la cual se cierra la sesión')
 ```
