@@ -102,9 +102,6 @@ static getAll() {
 
 ### Acciones disponibles
 
-- makeLoginAction
-
-
 ```javascript
 import { makeLoginAction, signOff } from '../../utils/authController/auth_action'
 
