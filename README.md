@@ -26,7 +26,7 @@ o
 
 
 
-### Instrucciones para utilizar el modulo `JWT AUTH`
+### Instrucciones para utilizar el modulo `JWT AUTH`
 
 
 - El estado initial del reducer contiene los siguientes atributos
@@ -42,7 +42,7 @@ const initialState = {
 }
 ```
 
-- agregar `middleware`
+- agregar `middleware`
 
 ```javascript
 import auth from './utils/authController/auth_middleware'
