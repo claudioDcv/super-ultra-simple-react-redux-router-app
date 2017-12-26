@@ -100,7 +100,7 @@ static getAll() {
 
 
 
-### Acciones disponibles
+### Acciones disponibles
 
 - makeLoginAction
 
