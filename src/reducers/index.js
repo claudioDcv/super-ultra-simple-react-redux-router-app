@@ -2,7 +2,8 @@ import { combineReducers } from 'redux'
 import { active } from './common'
 import course from './course'
 import courseTemplate from './courseTemplate'
-import auth from './auth'
+// ADDED AUTH REDUCER
+import auth from '../auth_module/auth_reducer'
 import giphy from './giphy'
 
 
@@ -22,15 +23,3 @@ const rootReducer = (state, action) => {
   return appReducer(state, action)
 }
 export default rootReducer
-
-
-
-
-// export default combineReducers({
-//   giphy,
-//   rootReducer,
-//   auth,
-//   courseTemplate,
-//   course,
-//   active,
-// })

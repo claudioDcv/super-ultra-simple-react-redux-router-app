@@ -2,7 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Button, Form, Container, Card } from 'semantic-ui-react'
-import { loadLogin } from '../../actions/auth'
+
+// ADDED AUTH ACTIONS
+import { makeLoginAction } from '../../auth_module/auth_action'
 import { makeActiveLink } from '../../actions/common'
 
 
@@ -32,13 +34,13 @@ class Login extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.state.auth.get) {
       if (nextProps.state.auth.get.token) {
-        this.props.history.push('/')
+        this.props.history.push('/home')
       }
     }
   }
 
   handlerSubmit() {
-    this.props.dispatch(loadLogin(this.state))
+    this.props.dispatch(makeLoginAction(this.state))
   }
 
   render() {

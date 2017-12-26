@@ -1,10 +1,11 @@
+import { getStateOrLocalToken, getStateOrLocalDateToken } from './helpers'
 const initialState = {
   get: {
-    token: '',
+    token: getStateOrLocalToken(),
   },
   get_error: null,
-  dateLastToken: '',
-  signOff: true,
+  dateLastToken: getStateOrLocalDateToken(),
+  signOff: !getStateOrLocalToken(),
 }
 
 export default function loginReducer(state = initialState, action) {
@@ -28,7 +29,7 @@ export default function loginReducer(state = initialState, action) {
       }
       return {
         ...state,
-        get: action.payload,
+        get: getStateOrLocalToken(action.payload),
         get_error: null,
         signOff: false,
       }
@@ -36,7 +37,10 @@ export default function loginReducer(state = initialState, action) {
     case 'LOAD_LOGIN_GET_ERROR':
       return {
         ...state,
-        get: null,
+        dateLastToken: null,
+        get: {
+          token: null,
+        },
         get_error: action.payload,
         signOff: true,
       }
@@ -50,6 +54,11 @@ export default function loginReducer(state = initialState, action) {
       case 'SIGN_OFF_SUCCESS':
         return {
           ...initialState,
+          dateLastToken: null,
+          get: {
+            token: null,
+          },
+          get_error: action.payload,
           signOff: true,
         }
 

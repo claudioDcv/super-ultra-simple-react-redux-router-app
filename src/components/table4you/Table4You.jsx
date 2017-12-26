@@ -12,26 +12,28 @@ class Table4You extends React.Component {
   }
 
   render() {
-    const { dataset } = this.props
+    const { dataset, action, columns } = this.props
     return (
       <Table color='olive' selectable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>{_('Id')}</Table.HeaderCell>
             <Table.HeaderCell>{_('Name')}</Table.HeaderCell>
+            <Table.HeaderCell>{_('Actions')}</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {dataset.map(e => (
             <Table.Row key={e.id}>
-              <Table.Cell>#{e.id}</Table.Cell>
-              <Table.Cell>{e.name}</Table.Cell>
+              <Table.Cell>{columns.id(e)}</Table.Cell>
+              <Table.Cell>{columns.name(e)}</Table.Cell>
+              <Table.Cell>{action(e)}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
         <Table.Footer>
           <Table.Row>
-            <Table.HeaderCell colSpan='2'>
+            <Table.HeaderCell colSpan='4'>
               <Menu floated='right' pagination>
                 <Menu.Item as='a' icon>
                   <Icon name='left chevron' />

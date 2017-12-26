@@ -13,6 +13,7 @@ import Home from './views/home/Home'
 import Courses from './views/course/Courses'
 import Course from './views/course/Course'
 import CourseTemplates from './views/course_templates/CourseTemplates'
+import CourseTemplate from './views/course_templates/CourseTemplate'
 import Students from './views/student/Students'
 import Student from './views/student/Student'
 
@@ -24,12 +25,13 @@ const App = ({ store }) => (
           <div className="parent">
             <Header />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
             <Route exact path="/courses" component={Courses} />
             <Route path="/courses/:id" component={Course} />
             <Route exact path="/students" component={Students} />
             <Route path="/students/:id" component={Student} />
-            <Route path="/course-templates" component={CourseTemplates} />
+            <Route exact path="/course-templates" component={CourseTemplates} />
+            <Route path="/course-templates/:id" component={CourseTemplate} />
           </div>
           <Footer />
         </div>

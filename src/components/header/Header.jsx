@@ -7,6 +7,8 @@ import { connect } from 'react-redux'
 import { makeActiveLink } from '../../actions/common';
 
 import _ from '../../texts'
+import { signOff } from '../../auth_module/auth_action'
+import { clearSession } from '../../auth_module/helpers'
 
 
 class Header extends Component {
@@ -28,7 +30,13 @@ class Header extends Component {
   check = (nextProps) => {
     if (nextProps.state.active.item !== '/login') {
       if (nextProps.state.auth.signOff) {
-        this.handleItemClick({}, { name: '/login' })
+        const name = '/login'
+        this.setState({ activeItem: name }, () => {
+          this.props.dispatch(makeActiveLink(name, () => {
+            this.props.history.push(name)
+            clearSession()
+          }));
+        })
       }
     }
   }
@@ -42,9 +50,14 @@ class Header extends Component {
   }
 
   handleItemClick = (e, { name }) => {
+    const self = this
+    if (name === '/logout') {
+      name = '/login'
+      this.props.dispatch(signOff('ui'))
+    }
     this.setState({ activeItem: name }, () => {
       this.props.dispatch(makeActiveLink(name, () => {
-        this.props.history.push(name);
+        self.props.history.push(name);
       }));
     })
   }
@@ -68,10 +81,11 @@ class Header extends Component {
       <Menu>
         {signOff && this.makeMenu('Login', '/login')}
 
-        {!signOff && this.makeMenu('Home', '/')}
+        {!signOff && this.makeMenu('Home', '/home')}
         {!signOff && this.makeMenu('Courses', '/courses')}
         {!signOff && this.makeMenu('Students', '/students')}
         {!signOff && this.makeMenu('Course Template', '/course-templates')}
+        {!signOff && this.makeMenu('Logout', '/logout')}
       </Menu>
     )
   }

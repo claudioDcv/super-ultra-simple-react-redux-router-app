@@ -1,5 +1,5 @@
 import { api } from '../conf/config'
-import request from './request'
+import request from '../auth_module/request_auth'
 
 const endpoint = `${api}/course-templates/`
 
@@ -8,6 +8,19 @@ class CourseTemplate {
   static getAll() {
     return request({
       url: endpoint,
+      method: 'GET',
+      authorization: true,
+    })
+    .then(response => {
+      return response
+    }).catch(error => {
+      return error
+    });
+  }
+
+  static get(id) {
+    return request({
+      url: `${endpoint}${id}/`,
       method: 'GET',
       authorization: true,
     })

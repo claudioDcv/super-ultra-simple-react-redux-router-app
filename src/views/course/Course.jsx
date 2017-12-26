@@ -53,8 +53,7 @@ class Course extends React.Component {
           <Breadcrumb.Section active>{item.name}</Breadcrumb.Section>
         </Breadcrumb>
         <Header as='h2'>
-          <Icon name={genderToIcon(item.gender)} size='large' circular />
-          {_('Course')} {item.name}
+          <small><Icon name={genderToIcon(item.gender)} />{_('Course')}</small><br />  {item.name}
         </Header>
 
         <Image src={image[0].images['downsized'].url} size='medium' rounded />

@@ -1,6 +1,8 @@
-import authApi from '../api/Auth'
+import { getApi } from './conect'
 
-
+/**
+ * @param info {number}: code http
+**/
 export const signOff = (info) => ({
   type: 'SIGN_OFF_SUCCESS',
   payload: info,
@@ -11,7 +13,10 @@ export const lastTokenSetSuccess = () => ({
   payload: new Date().getTime(),
 })
 
-export function loadLoginSuccess(login, dispatch) {
+/**
+ * @param login.token {string}: JSON Web Token
+**/
+export const loadLoginSuccess = (login, dispatch) => {
   dispatch(lastTokenSetSuccess())
   return {
     type: 'LOAD_LOGIN_GET_SUCCESS',
@@ -19,13 +24,17 @@ export function loadLoginSuccess(login, dispatch) {
   }
 }
 
-export function loadLogin(data) {
-  return function(dispatch) {
+/**
+ * @param data.username {string}: username
+ * @param data.password {string}: password
+**/
+export const makeLoginAction = data => {
+  return dispatch => {
     dispatch({
       type: 'LOAD_LOGIN_GET_REQUEST',
       payload: null,
     });
-    return authApi.login(data).then(login => {
+    return getApi().login(data).then(login => {
       dispatch(loadLoginSuccess(login, dispatch))
     }).catch(error => {
       dispatch({
