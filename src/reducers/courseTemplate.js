@@ -3,7 +3,7 @@ import { makeReducerResource } from './generic'
 const initialState = {
   get: null,
   get_error: null,
-  getList: [],
+  getList: null,
   getList_error: null,
 }
 

@@ -9,7 +9,7 @@ import { makeActiveLink } from '../../actions/common'
 class Home extends React.Component {
 
   componentDidMount() {
-    this.props.dispatch(makeActiveLink('/'))
+    this.props.dispatch(makeActiveLink('/home'))
   }
 
   render() {

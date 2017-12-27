@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Button, Form, Container, Card } from 'semantic-ui-react'
 
-// ADDED AUTH ACTIONS
-import { makeLoginAction } from '../../auth_module/auth_action'
 import { makeActiveLink } from '../../actions/common'
 
+import { actions } from '../../auth_module_connect'
 
 class Login extends React.Component {
   constructor(props) {
@@ -40,7 +39,7 @@ class Login extends React.Component {
   }
 
   handlerSubmit() {
-    this.props.dispatch(makeLoginAction(this.state))
+    this.props.dispatch(actions.makeLoginAction(this.state))
   }
 
   render() {

@@ -3,21 +3,19 @@ import { active } from './common'
 import course from './course'
 import courseTemplate from './courseTemplate'
 // ADDED AUTH REDUCER
-import auth from '../auth_module/auth_reducer'
+import auth from '../auth_module'
 import giphy from './giphy'
-
-
 
 const appReducer = combineReducers({
   giphy,
-  auth,
+  auth: auth.reducersBase,
   courseTemplate,
   course,
   active,
 })
 
 const rootReducer = (state, action) => {
-  if (action.type === 'SIGN_OFF_SUCCESS') {
+  if (action.type === '@SIGN_OFF_SUCCESS') {
     state = undefined
   }
   return appReducer(state, action)

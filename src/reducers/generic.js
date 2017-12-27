@@ -30,7 +30,7 @@ export const makeReducerResource = (name, action, state, initial) => {
       return {
         ...state,
         getList_error: null,
-        getList: [],
+        getList: null,
       }
     case `${name}_LIST_SUCCESS`:
       if (action.payload.detail) {
@@ -47,7 +47,7 @@ export const makeReducerResource = (name, action, state, initial) => {
     case `${name}_LIST_ERROR`:
       return {
         ...state,
-        getList: [],
+        getList: null,
         getList_error: action.payload,
       }
 

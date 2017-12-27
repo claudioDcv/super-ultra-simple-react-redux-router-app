@@ -1,13 +1,14 @@
 import React from 'react'
-import { Container, Icon } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 
 import { loadCourseTemplates } from '../../actions/courseTemplate'
 import { makeActiveLink } from '../../actions/common'
 import { isLogin } from '../../utils/helpers'
 import Table4You from '../../components/table4you/Table4You'
+
+import BtnView from '../../components/ui/BtnView'
 
 
 class CourseTemplates extends React.Component {
@@ -24,20 +25,31 @@ class CourseTemplates extends React.Component {
     return (
       <Container text>
         <Table4You
+          className='ui olive selectable table'
           dataset={getList}
-          action={item => (
-            <Link to={`/course-templates/${item.id}`}>
-              <Icon name='eye' />
-            </Link>
-          )}
-          columns={{
-            id: item => (
-              <Link to={`/course-templates/${item.id}`}>
-                {item.id}
-              </Link>
-            ),
-            name: item => item.name,
+          nameResultSet='results'
+          id='id'
+          action={{
+            title: 'Acción',
+            component: item => <BtnView to={`/course-templates/${item.id}`} />,
           }}
+          columns={[
+            {
+              name: 'id',
+              title: 'Código',
+              component: item => <BtnView to={`/course-templates/${item.id}`} >{item.id}</BtnView>,
+            },
+            {
+              name: 'name',
+              title: 'Nombre',
+              titleClassName: '',
+              titleStyle: { color: 'green' },
+              className: '',
+              style: {
+                color: 'red',
+              },
+            }
+          ]}
         />
       </Container>
     )

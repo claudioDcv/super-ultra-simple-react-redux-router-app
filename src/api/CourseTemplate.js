@@ -1,8 +1,7 @@
 import { api } from '../conf/config'
-import request from '../auth_module/request_auth'
+import { request } from '../auth_module_connect'
 
 const endpoint = `${api}/course-templates/`
-
 
 class CourseTemplate {
   static getAll() {

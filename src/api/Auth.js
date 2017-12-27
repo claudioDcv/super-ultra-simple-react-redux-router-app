@@ -1,7 +1,7 @@
 import { api } from '../conf/config'
 
 // ADDED AUTH REQUEST
-import request from '../auth_module/request_auth'
+import { request } from '../auth_module_connect'
 
 const tokenAuth = `${api}/api-token-auth/`
 const tokenRefresh = `${api}/api-token-refresh/`
@@ -24,7 +24,7 @@ class Auth {
     return request({
       url: tokenRefresh,
       method: 'POST',
-      body: JSON.stringify(data),
+      body: data,
     }).then(response => {
       return response
     }).catch(error => {

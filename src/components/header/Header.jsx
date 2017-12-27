@@ -7,9 +7,10 @@ import { connect } from 'react-redux'
 import { makeActiveLink } from '../../actions/common';
 
 import _ from '../../texts'
-import { signOff } from '../../auth_module/auth_action'
 import { clearSession } from '../../auth_module/helpers'
 
+
+import { actions } from '../../auth_module_connect'
 
 class Header extends Component {
   state = {}
@@ -53,7 +54,7 @@ class Header extends Component {
     const self = this
     if (name === '/logout') {
       name = '/login'
-      this.props.dispatch(signOff('ui'))
+      this.props.dispatch(actions.signOff('ui'))
     }
     this.setState({ activeItem: name }, () => {
       this.props.dispatch(makeActiveLink(name, () => {

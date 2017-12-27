@@ -2,12 +2,31 @@ import React from 'react'
 import { Container, Header, Loader, Dimmer, Breadcrumb, Icon, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 
 import _ from '../../texts'
 import { loadCourses } from '../../actions/course'
 import { extractNumbers, genderToIcon } from '../../utils/helpers'
 import { makeActiveLink } from '../../actions/common';
+
+import Table4You from '../../components/table4you/Table4You'
+import BtnView from '../../components/ui/BtnView'
+
+const makeColumns = [
+  {
+    name: 'id',
+    title: 'Código',
+    component: item => <BtnView to={`/courses/${extractNumbers(item.url)}`} >{extractNumbers(item.url)}</BtnView>,
+  },
+  {
+    name: 'gender',
+    title: 'Genero',
+    component: item => <Icon name={genderToIcon(item.gender)} />,
+  },
+  {
+    name: 'name',
+    title: 'Nombre',
+  }
+]
 
 
 class Courses extends React.Component {
@@ -35,14 +54,18 @@ class Courses extends React.Component {
           <Breadcrumb.Section active>{_('Courses')}</Breadcrumb.Section>
         </Breadcrumb>
         <Header as='h2'>{_('Courses')}</Header>
-        {list.results.map(item => (
-          <p key={extractNumbers(item.url)}>
-            <Link to={`/courses/${extractNumbers(item.url)}`}>
-              <Icon name={genderToIcon(item.gender)} size='large' circular />
-              {item.name}
-            </Link>
-          </p>
-        ))}
+        <Table4You
+          className='ui red selectable table'
+          dataset={list}
+          nameResultSet='results'
+          id='id'
+          idFunction={item => extractNumbers(item.url)}
+          action={{
+            title: 'Acción',
+            component: item => <BtnView to={`/courses/${extractNumbers(item.url)}`} />,
+          }}
+          columns={makeColumns}
+        />
         {list.results.length === 0 && (
           <Dimmer active inverted>
             <Loader inverted>{_('Loading')}</Loader>

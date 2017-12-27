@@ -29,6 +29,53 @@ o
 ### Instrucciones para utilizar el modulo `JWT AUTH`
 
 
+- Creare archivo para conectar el modulo auth
+
+```javascript
+import apiAuth from './api/Auth' // Api descrita a continuación
+import store from './store' // store de redux
+
+import auth from './auth_module' // referencia al modulo
+
+// Inject store and apiAuth : login, refresh
+export const request = auth.requestBase(store, apiAuth) // iniciar request
+export const actions = auth.actionsBase(apiAuth) // iniciar actions
+```
+
+- Utilizar request con JWT que provee este modulo
+
+```javascript
+import { request } from '../auth_module_connect'
+
+class Auth {
+  static login(data) {
+    return request({
+      url: tokenAuth,
+      method: 'POST',
+      body: data,
+    }).then(response => {
+      return response
+    }).catch(error => {
+      return error
+    });
+  }
+
+  static refresh(data) {
+    return request({
+      url: tokenRefresh,
+      method: 'POST',
+      body: data,
+    }).then(response => {
+      return response
+    }).catch(error => {
+      return error
+    });
+  }
+
+}
+```
+
+
 - El estado initial del reducer contiene los siguientes atributos
 
 ```javascript
@@ -42,48 +89,32 @@ const initialState = {
 }
 ```
 
-- agregar `middleware`
+- agregar `middleware`
 
 ```javascript
-import auth from './utils/authController/auth_middleware'
-
+import auth from './auth_module'
 const store = createStore(
   rootReducer,
-  applyMiddleware(auth()),
-);
+  applyMiddleware(thunk, auth.middlewareBase()),
+)
 ```
 
 - agregar `reducer`
 
 ```javascript
-import auth from '../utils/authController/auth_reducer'
+import auth from '../auth_module'
 
 const appReducer = combineReducers({
-  auth,
+  auth: auth.reducersBase,
 })
 ```
 
-- utilizar request segura
-
-```javascript
-import request from '../utils/authController/request_auth'
-
-const login = (data) => {
-  return request({
-    url: tokenAuth,
-    method: 'POST',
-    body: data,
-  }).then(response => {
-    return response
-  }).catch(error => {
-    return error
-  });
-}
-```
 - utilizar api segura con token de autorización
 > de debe indicar el parametro authorization como `true` para enviar el token
 
 ```javascript
+import { request } from '../auth_module_connect'
+
 static getAll() {
   return request({
     url: endpoint,
@@ -98,9 +129,9 @@ static getAll() {
 }
 ```
 
+### Acciones disponibles
 
-
-### Acciones disponibles
+- makeLoginAction y signOff
 
 ```javascript
 import { makeLoginAction, signOff } from '../../utils/authController/auth_action'
@@ -113,9 +144,6 @@ makeLoginAction({
 // Para cerrar sesion existe el metodo
 signOff('incluir la razón por la cual se cierra la sesión')
 ```
-
-
-
 
 # Estructura del proyecto
 
