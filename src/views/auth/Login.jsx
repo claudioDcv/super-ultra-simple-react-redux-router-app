@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Button, Form, Container, Card } from 'semantic-ui-react'
 
+import _ from '../../texts'
 import { makeActiveLink } from '../../actions/common'
 
 import { actions } from '../../auth_module_connect'
@@ -42,22 +43,34 @@ class Login extends React.Component {
     this.props.dispatch(actions.makeLoginAction(this.state))
   }
 
+  disabled() {
+    const item = this.state
+    let isNull = false
+
+    Object.keys(item).forEach(e => {
+      const el = item[e]
+      if (el === null || el === '' || el === 0) isNull = true
+    })
+
+    return isNull
+  }
+
   render() {
     return (
       <Container text>
-        <Card style={{ margin: 'auto' }}>
+        <Card className='login'>
           <Card.Content header='Login' />
           <Card.Content extra>
             <Form onSubmit={this.handlerSubmit}>
               <Form.Field>
-                <label>Username</label>
-                <input name="username" onChange={this.handlerChange} placeholder='First Name' value={this.state.user} />
+                <label>{_('Username')}</label>
+                <input name="username" onChange={this.handlerChange} placeholder={_('enter Username')} value={this.state.user} />
               </Form.Field>
               <Form.Field>
-                <label>Password</label>
-                <input name="password" onChange={this.handlerChange} placeholder='Last Name' value={this.state.password}/>
+                <label>{_('Password')}</label>
+                <input name="password" onChange={this.handlerChange} placeholder={_('enter Password')} value={this.state.password}/>
               </Form.Field>
-              <Button type='submit'>Submit</Button>
+              <Button type='submit' disabled={this.disabled()}>{_('Submit')}</Button>
             </Form>
           </Card.Content>
         </Card>

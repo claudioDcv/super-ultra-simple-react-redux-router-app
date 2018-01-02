@@ -1,35 +1,36 @@
+import axios from 'axios'
 import { api } from '../conf/config'
 
-// ADDED AUTH REQUEST
-import { request } from '../auth_module_connect'
+import { secure } from '../auth_module_connect'
 
-const tokenAuth = `${api}/api-token-auth/`
-const tokenRefresh = `${api}/api-token-refresh/`
+const endpointAuth = `${api}/api-token-auth/`
+const endpointRefresh = `${api}/api-token-refresh/`
 
 
 class Auth {
+
   static login(data) {
-    return request({
-      url: tokenAuth,
+    return axios({
+      url: endpointAuth,
       method: 'POST',
-      body: data,
-    }).then(response => {
-      return response
-    }).catch(error => {
-      return error
-    });
+      data,
+    })
+    .then(response => secure.secureResponse(response, response.status).data)
+    .catch(error => error)
   }
 
   static refresh(data) {
-    return request({
-      url: tokenRefresh,
-      method: 'POST',
-      body: data,
-    }).then(response => {
-      return response
-    }).catch(error => {
-      return error
-    });
+    return secure.secureRequest((config) => axios(config), {
+      lib: {
+        url: endpointRefresh,
+        method: 'POST',
+        data,
+      },
+      authorization: true,
+      isRefresh: true,
+    })
+    .then(response => secure.secureResponse(response, response.status).data)
+    .catch(error => error.response.data)
   }
 
 }

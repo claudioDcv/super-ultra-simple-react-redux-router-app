@@ -7,8 +7,10 @@ import { loadCourseTemplates } from '../../actions/courseTemplate'
 import { makeActiveLink } from '../../actions/common'
 import { isLogin } from '../../utils/helpers'
 import Table4You from '../../components/table4you/Table4You'
+import _ from '../../texts'
 
 import BtnView from '../../components/ui/BtnView'
+import BtnEdit from '../../components/ui/BtnEdit'
 
 
 class CourseTemplates extends React.Component {
@@ -30,23 +32,28 @@ class CourseTemplates extends React.Component {
           nameResultSet='results'
           id='id'
           action={{
-            title: 'Acción',
-            component: item => <BtnView to={`/course-templates/${item.id}`} />,
+            title: _('Actions'),
+            component: item => (
+              <div>
+                <BtnView to={`/course-templates/${item.id}`} />
+                <BtnEdit to={`/course-templates/${item.id}/edit`} />
+              </div>
+            ),
           }}
           columns={[
             {
               name: 'id',
-              title: 'Código',
+              title: _('Code'),
               component: item => <BtnView to={`/course-templates/${item.id}`} >{item.id}</BtnView>,
             },
             {
               name: 'name',
-              title: 'Nombre',
+              title: _('Name'),
               titleClassName: '',
-              titleStyle: { color: 'green' },
+              titleStyle: { color: '#000000' },
               className: '',
               style: {
-                color: 'red',
+                color: '#000000',
               },
             }
           ]}

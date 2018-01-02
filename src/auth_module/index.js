@@ -1,12 +1,13 @@
 import actionsBase from './auth_actions'
-import requestBase from './auth_request'
+import requestBaseImp from './auth_request'
 import middlewareBase from './auth_middleware'
 import reducersBase from './auth_reducers'
 
 
+export const requestBase = requestBaseImp;
+
 export default {
   actionsBase,
-  requestBase,
   middlewareBase,
   reducersBase,
 }

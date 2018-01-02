@@ -56,7 +56,7 @@ const initialState = {
   },
   get_error: 'Si el Token no viene o existe un error se registrara aquí', //default: null
   dateLastToken: 'Fecha en entero de ultima vez en que se seteo token como timestamp', //default: null
-  signOff: 'Indica si la session esta cerrada', //default: true
+  isLogged: 'Indica si la session esta cerrada', //default: true
 }
 ```
 
@@ -102,10 +102,10 @@ static getAll() {
 
 ### Acciones disponibles
 
-- makeLoginAction y signOff
+- makeLoginAction y isLogged
 
 ```javascript
-import { makeLoginAction, signOff } from '../../utils/authController/auth_action'
+import { makeLoginAction, isLogged } from '../../utils/authController/auth_action'
 
 makeLoginAction({
   username: 'admin',
@@ -113,5 +113,5 @@ makeLoginAction({
 })
 
 // Para cerrar sesion existe el metodo
-signOff('incluir la razón por la cual se cierra la sesión')
+isLogged('incluir la razón por la cual se cierra la sesión')
 ```

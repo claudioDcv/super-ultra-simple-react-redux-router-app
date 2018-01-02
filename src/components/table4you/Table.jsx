@@ -1,22 +1,31 @@
 import React from 'react'
 import Thead from './Thead'
 import Tbody from './Tbody'
+import Pagination from './Pagination'
 
-export default (props) => {
-  const { dataset, action, columns, className, nameResultSet, id, idFunction } = props.options
+const Table = props => {
+  const { dataset, action, columns, className, nameResultSet, id, idFunction, pagination } = props.options
+  const prefix = props.options.prefix || 'Table4You'
   return (
-    <table className={className}>
-      <Thead options={{ action, columns }} />
-      <Tbody
-        options={{
-          action,
-          columns,
-          nameResultSet,
-          id,
-          idFunction,
-          dataset,
-        }}
-      />
-    </table>
+    <div className={`${prefix} table4you table4you-container`}>
+      <table className={`${prefix} ${className}`}>
+        <Thead options={{ action, columns }} />
+        <Tbody
+          options={{
+            action,
+            columns,
+            nameResultSet,
+            id,
+            idFunction,
+            dataset,
+          }}
+        />
+      </table>
+      {pagination && <div className={`${prefix} table4you table4you-pagination`}>
+        <Pagination dataset={dataset} pagination={pagination} />
+      </div>}
+    </div>
   )
 }
+
+export default Table

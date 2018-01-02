@@ -1,17 +1,16 @@
 import React from 'react'
 
-export default (props) => {
+import Th from './Th'
+const Thead = props => {
   const { action, columns } = props.options
   return (
     <thead>
       <tr>
-          {columns.map((f, i) => (
-              <th key={i} className={f.titleClassName || null} style={f.titleStyle || null}>
-                {f.title || f.name}
-              </th>
-          ))}
-        <th>{action.title}</th>
+        {columns.map((f, i) => <Th key={i} element={f} />)}
+        {action && <th>{action.title}</th>}
       </tr>
     </thead>
   )
 }
+
+export default Thead

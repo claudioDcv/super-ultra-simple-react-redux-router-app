@@ -2,14 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { Breadcrumb, Container, Header, Segment, Loader, Dimmer } from 'semantic-ui-react'
+import { Breadcrumb, Container, Header, Segment, Loader, Dimmer, Form } from 'semantic-ui-react'
 
 import _ from '../../texts'
 import { loadCourse } from '../../actions/course'
-import { makeActiveLink } from '../../actions/common';
+import { makeActiveLink } from '../../actions/common'
+import { Select, Input } from '../../components/form4you'
+
+import apiCarrer from '../../api/Carrer'
+import apiCourseTemplate from '../../api/CourseTemplate'
 
 
-class Course extends React.Component {
+class CourseEdit extends React.Component {
 
   constructor(props : object) {
     super(props)
@@ -18,6 +22,9 @@ class Course extends React.Component {
       item: null,
       error: null,
     }
+
+    this.change = this.change.bind(this)
+    this.submit = this.submit.bind(this)
   }
 
   componentDidMount() {
@@ -30,6 +37,21 @@ class Course extends React.Component {
       item: nextProps.state.course.get,
       error: nextProps.state.course.get_error,
     })
+  }
+
+  change(event) {
+    const { name, value } = event.target
+    this.setState(prevState => ({
+      ...prevState,
+      item: {
+        ...prevState.item,
+        [name]: value,
+      },
+    }))
+  }
+
+  submit(event) {
+    event.preventDefault()
   }
 
   render() {
@@ -46,7 +68,32 @@ class Course extends React.Component {
         <Header as='h2'>
           <small>{_('Course')}</small><br /> {item.course_template.name}
         </Header>
-        {item.id}
+
+        <Form onSubmit={this.submit}>
+          <Input
+            item={item}
+            name='id'
+            title='Código'
+            onChange={this.change}
+          />
+
+          <Select
+            item={item}
+            name='carrer'
+            title='Carrera'
+            onChange={this.change}
+            api={apiCarrer.getAll}
+          />
+
+          <Select
+            item={item}
+            name='course_template'
+            title='Plantilla e Curso'
+            onChange={this.change}
+            api={apiCourseTemplate.getAll}
+          />
+        </Form>
+
       </Container>
     ) : (
       !error ? (
@@ -64,7 +111,7 @@ class Course extends React.Component {
   }
 }
 
-Course.propTypes = {
+CourseEdit.propTypes = {
   dispatch: PropTypes.func,
   match: PropTypes.object,
 }
@@ -73,4 +120,4 @@ const mapStateToProps = state => ({
   state: state,
 });
 
-export default connect(mapStateToProps)(Course)
+export default connect(mapStateToProps)(CourseEdit)

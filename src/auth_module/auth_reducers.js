@@ -5,33 +5,32 @@ const initialState = {
   },
   get_error: null,
   dateLastToken: getStateOrLocalDateToken(),
-  signOff: !getStateOrLocalToken(),
+  isLogged: !!getStateOrLocalToken(),
 }
 
-export default (state = initialState, action) => {
+export default (state : object = initialState, action : object) => {
   switch(action.type) {
     case '@LOAD_LOGIN_GET_REQUEST':
       return {
         ...state,
-        get_error: null,
-        get: null,
-        signOff: true,
       }
 
     case '@LOAD_LOGIN_GET_SUCCESS':
       if (!action.payload.token) {
         return {
           ...state,
-          get: null,
+          get: {
+            token: null,
+          },
           get_error: action.payload,
-          signOff: true,
+          isLogged: false,
         }
       }
       return {
         ...state,
         get: getStateOrLocalToken(action.payload),
         get_error: null,
-        signOff: false,
+        isLogged: true,
       }
 
     case '@LOAD_LOGIN_GET_ERROR':
@@ -42,7 +41,7 @@ export default (state = initialState, action) => {
           token: null,
         },
         get_error: action.payload,
-        signOff: true,
+        isLogged: false,
       }
 
     case '@LAST_TOKEN_SET_SUCCESS':
@@ -51,16 +50,16 @@ export default (state = initialState, action) => {
         dateLastToken: action.payload,
       }
 
-      case '@SIGN_OFF_SUCCESS':
-        return {
-          ...initialState,
-          dateLastToken: null,
-          get: {
-            token: null,
-          },
-          get_error: action.payload,
-          signOff: true,
-        }
+    case '@SIGN_OFF_SUCCESS':
+      return {
+        ...initialState,
+        dateLastToken: null,
+        get: {
+          token: null,
+        },
+        get_error: action.payload,
+        isLogged: false,
+      }
 
     default:
       return state;

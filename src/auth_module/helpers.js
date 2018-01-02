@@ -2,7 +2,10 @@ const NAME_VARIABLE_TOKEN = 'token'
 const NAME_VARIABLE_DATE_TOKEN = 'date-token'
 const storage = window.localStorage
 
-export const getStateOrLocalToken = (token) => {
+/**
+* @param token {string}
+**/
+export const getStateOrLocalToken = (token : string) => {
   let t = token
   if (!t) {
     t = storage.getItem(NAME_VARIABLE_TOKEN)

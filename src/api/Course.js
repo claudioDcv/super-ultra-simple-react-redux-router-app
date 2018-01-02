@@ -1,23 +1,42 @@
-import { apiUrl } from '../conf/config'
+import axios from 'axios'
 
-const endpoint = `${apiUrl}/people`
+import { api } from '../conf/config'
+import { secure } from '../auth_module_connect'
+
+const endpoint = `${api}/courses`
+
 
 class Course {
-  static getAll(query = '1') {
-    return fetch(`${endpoint}/?page=${query}`).then(response => {
-      return response.json();
-    }).catch(error => {
-      return error
-    });
+
+  static getAll(q) {
+    const qsFormat = q ? `?${q}` : ''
+    return secure.secureRequest((config) => axios(config), {
+      lib: {
+        url: `${endpoint}/${qsFormat}`,
+        method: 'GET',
+      },
+      authorization: true,
+    })
+    .then(response => {
+      return secure.secureResponse(response, response.status).data
+    })
+    .catch(error => error)
   }
 
-  static get(id : number) {
-    return fetch(`${endpoint}/${id}/`).then(response => {
-      return response.json();
-    }).catch(error => {
-      return error
-    });
+  static get(id) {
+    return secure.secureRequest((config) => axios(config), {
+      lib: {
+        url: `${endpoint}/${id}/`,
+        method: 'GET',
+      },
+      authorization: true,
+    })
+    .then(response => {
+      return secure.secureResponse(response, response.status).data
+    })
+    .catch(error => error)
   }
+
 }
 
 export default Course

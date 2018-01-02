@@ -8,6 +8,7 @@ import { makeActiveLink } from '../../actions/common';
 
 import _ from '../../texts'
 import { clearSession } from '../../auth_module/helpers'
+import Persist from '../../utils/Persist'
 
 
 import { actions } from '../../auth_module_connect'
@@ -30,7 +31,7 @@ class Header extends Component {
 
   check = (nextProps) => {
     if (nextProps.state.active.item !== '/login') {
-      if (nextProps.state.auth.signOff) {
+      if (!nextProps.state.auth.isLogged) {
         const name = '/login'
         this.setState({ activeItem: name }, () => {
           this.props.dispatch(makeActiveLink(name, () => {
@@ -43,7 +44,9 @@ class Header extends Component {
   }
 
   componentWillMount() {
-
+    if (this.props.history.location.pathname === '/') {
+      this.props.dispatch(actions.logoff('ui'))
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -51,10 +54,11 @@ class Header extends Component {
   }
 
   handleItemClick = (e, { name }) => {
+    Persist.clearAll()
     const self = this
     if (name === '/logout') {
       name = '/login'
-      this.props.dispatch(actions.signOff('ui'))
+      this.props.dispatch(actions.logoff('ui'))
     }
     this.setState({ activeItem: name }, () => {
       this.props.dispatch(makeActiveLink(name, () => {
@@ -77,16 +81,16 @@ class Header extends Component {
   }
 
   render() {
-    const { signOff } = this.props.state.auth
+    const { isLogged } = this.props.state.auth
     return (
       <Menu>
-        {signOff && this.makeMenu('Login', '/login')}
+        {!isLogged && this.makeMenu('Login', '/login')}
 
-        {!signOff && this.makeMenu('Home', '/home')}
-        {!signOff && this.makeMenu('Courses', '/courses')}
-        {!signOff && this.makeMenu('Students', '/students')}
-        {!signOff && this.makeMenu('Course Template', '/course-templates')}
-        {!signOff && this.makeMenu('Logout', '/logout')}
+        {isLogged && this.makeMenu('Home', '/home')}
+        {isLogged && this.makeMenu('Courses', '/courses')}
+        {isLogged && this.makeMenu('Students', '/students')}
+        {isLogged && this.makeMenu('Course Template', '/course-templates')}
+        {isLogged && this.makeMenu('Logout', '/logout')}
       </Menu>
     )
   }

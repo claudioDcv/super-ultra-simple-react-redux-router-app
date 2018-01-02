@@ -17,7 +17,7 @@ class Table4You extends React.Component {
   }
 
   render() {
-    const { action, columns, className, nameResultSet, id, idFunction } = this.props
+    const { action, columns, className, nameResultSet, id, idFunction, pagination } = this.props
     const { dataset } = this.state
     return dataset ? (
       <Table
@@ -28,7 +28,8 @@ class Table4You extends React.Component {
           nameResultSet,
           id,
           idFunction,
-          dataset
+          dataset,
+          pagination,
         }}
       />
     ) : (
@@ -42,24 +43,3 @@ Table4You.propTypes = {
 }
 
 export default Table4You
-
-/*
-<Table.Footer>
-  <Table.Row>
-    <Table.HeaderCell colSpan='4'>
-      <Menu floated='right' pagination>
-        <Menu.Item as='a' icon>
-          <Icon name='left chevron' />
-        </Menu.Item>
-        <Menu.Item as='a'>1</Menu.Item>
-        <Menu.Item as='a'>2</Menu.Item>
-        <Menu.Item as='a'>3</Menu.Item>
-        <Menu.Item as='a'>4</Menu.Item>
-        <Menu.Item as='a' icon>
-          <Icon name='right chevron' />
-        </Menu.Item>
-      </Menu>
-    </Table.HeaderCell>
-  </Table.Row>
-</Table.Footer>
-*/

@@ -2,7 +2,7 @@ export default (api) => {
   /**
    * @param info {number}: code http
   **/
-  const signOff = (info) => ({
+  const logoff = (info : number) => ({
     type: '@SIGN_OFF_SUCCESS',
     payload: info,
   })
@@ -15,7 +15,7 @@ export default (api) => {
   /**
    * @param login.token {string}: JSON Web Token
   **/
-  const loadLoginSuccess = (login, dispatch) => {
+  const loadLoginSuccess = (login : object, dispatch : Function) => {
     dispatch(lastTokenSetSuccess())
     return {
       type: '@LOAD_LOGIN_GET_SUCCESS',
@@ -32,22 +32,23 @@ export default (api) => {
       dispatch({
         type: '@LOAD_LOGIN_GET_REQUEST',
         payload: null,
-      });
+      })
       return api.login(data).then(login => {
         dispatch(loadLoginSuccess(login, dispatch))
-      }).catch(error => {
+      })
+      .catch(error => {
         dispatch({
           type: '@LOAD_LOGIN_GET_ERROR',
           payload: error,
-        });
-      });
-    };
+        })
+      })
+    }
   }
 
   return {
     makeLoginAction,
     loadLoginSuccess,
     lastTokenSetSuccess,
-    signOff
+    logoff,
   }
 }

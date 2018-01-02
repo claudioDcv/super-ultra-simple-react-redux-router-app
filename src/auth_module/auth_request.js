@@ -1,86 +1,82 @@
 import actionAuth from './auth_actions'
-import { getStateOrLocalToken } from './helpers'
-const MAX_TIME_SECOND_UPDATE_TOKEN = 1800
-const JWT_PREFIX = 'JWT '
-const JWT_PARAM_NAME = 'Authorization'
-const UNAUTHORIZED_CODE = 401
-const HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
-}
+import { getStateOrLocalToken, getStateOrLocalDateToken } from './helpers'
 
-export default (store, api) => {
-  const { loadLoginSuccess, signOff } = actionAuth(api)
-  const get = (obj, xhr, resolve, reject) => {
-    if (obj.headers) {
-        Object.keys(obj.headers).forEach(key => {
-            try {
-              xhr.setRequestHeader(key, obj.headers[key]);
-            } catch (err) {
+export default (store, api, opt = {}) => {
+  const NAME_LIBRARY = opt.nameLibrary || 'lib'
+  const MAX_TIME_SECOND_UPDATE_TOKEN = opt.maxTimeSecondUpdateToken || 1800
+  const JWT_PREFIX = opt.jtwPrefix || 'JWT '
+  const JWT_PARAM_NAME = opt.jwtParamName || 'Authorization'
+  const UNAUTHORIZED_CODE = opt.unauthorizedCode || 401
+  const HEADERS = opt.headers || {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  }
+  const secureRequest = (cb, obj = {}) => {
 
-            }
-        });
+    if (!obj[NAME_LIBRARY].headers) {
+      obj[NAME_LIBRARY] = {
+        headers: {},
+        ...obj[NAME_LIBRARY],
+      }
     }
-    xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            resolve(JSON.parse(xhr.response));
-        } else {
-            if (xhr.status === UNAUTHORIZED_CODE) {
-              store.dispatch(signOff(xhr.status))
+
+    obj[NAME_LIBRARY].headers = {
+      ...obj[NAME_LIBRARY].headers,
+      ...HEADERS,
+    }
+
+    if (obj.authorization) {
+      const state = store.getState()
+      let token = getStateOrLocalToken(state.auth.get.token)
+      const date = getStateOrLocalDateToken(state.auth.dateLastToken)
+      obj[NAME_LIBRARY].headers[JWT_PARAM_NAME] = `${JWT_PREFIX}${token}`
+
+      const lastTime = (new Date().getTime() - date) / 1000
+
+      if (lastTime >= MAX_TIME_SECOND_UPDATE_TOKEN) {
+        const getToken = getStateOrLocalToken
+
+        if (!obj.isRefresh) {
+          api.refresh({
+            token: token,
+          }).then(d => {
+            if (d.token) {
+              store.dispatch(actionAuth(api).loadLoginSuccess(d, store.dispatch))
+
+              const state = store.getState()
+              let token = getToken(state.auth.get.token)
+
+              obj[NAME_LIBRARY].headers[JWT_PARAM_NAME] = `${JWT_PREFIX}${token}`
+              return cb(obj[NAME_LIBRARY])
+            } else {
+              store.dispatch(actionAuth(api).logoff('UNAUTHORIZED'))
+              return new Promise((res, rej) => rej('UNAUTHORIZED'))
             }
-            reject(JSON.parse(xhr.response))
+          })
+          .catch(error => {
+            return error;
+          })
         }
-    };
-    xhr.onerror = () => reject(xhr.statusText);
-
-    let body = obj.body
-    if (typeof obj.body === 'object') {
-      body = JSON.stringify(obj.body)
+      }
     }
-    xhr.send(body)
-
+    return cb(obj[NAME_LIBRARY])
   }
 
-  let request = obj => {
-      return new Promise((resolve, reject) => {
-          let xhr = new XMLHttpRequest();
-          let isSend = false
-          xhr.open(obj.method || 'GET', obj.url);
+  const secureResponse = (response, statusCode) => {
+    if (statusCode < 200 && statusCode > 299) {
+      store.dispatch(actionAuth(api).logoff(statusCode))
+      return null
+    }
+    if (statusCode === UNAUTHORIZED_CODE) {
+      store.dispatch(actionAuth(api).logoff(statusCode))
+      return null
+    }
+    return response
+  }
 
-          obj.headers = {
-            ...HEADERS,
-            ...obj.headers,
-          };
-          if (obj.authorization) {
-            const state = store.getState()
-            let token = getStateOrLocalToken(state.auth.get.token)
-            obj.headers[JWT_PARAM_NAME] = `${JWT_PREFIX}${token}`
-            const date = state.auth.dateLastToken
-            if (date) {
-              const lastTime = (new Date().getTime() - date) / 1000
-              if (lastTime >= MAX_TIME_SECOND_UPDATE_TOKEN) {
-                api.refresh({
-                  token: token,
-                }).then(d => {
-                  store.dispatch(loadLoginSuccess(d, store.dispatch))
-
-                  let xhrNew = new XMLHttpRequest();
-                  xhrNew.open(obj.method || 'GET', obj.url);
-                  if (!isSend) {
-                    get(obj, xhrNew, resolve, reject)
-                    isSend = true
-                  }
-                })
-              }
-            }
-          }
-          if (!isSend) {
-            get(obj, xhr, resolve, reject)
-            isSend = true
-          }
-      });
-  };
-
-  return request
+  return {
+    secureRequest,
+    secureResponse,
+  }
 }
