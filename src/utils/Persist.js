@@ -20,8 +20,8 @@ class Persist {
     const elements = ls
     const elmsMatch = []
     Object.keys(elements).forEach(e => {
-      const key = e
-      const val = Persist.get(e)
+      const key = e.replace('@persist:', '')
+      const val = Persist.get(key)
       if (val) {
         elmsMatch.push({
           key,

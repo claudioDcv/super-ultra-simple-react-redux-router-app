@@ -38,6 +38,19 @@ class Courses extends React.Component {
     this.props.dispatch(loadCourses(`page=${p}`))
   }
 
+  gotoNumber = n => {
+    const p = Persist.set('course-page', n)
+    this.setState({ page: p })
+    this.props.dispatch(loadCourses(`page=${p}`))
+  }
+
+  getCurrentNumber(prev, next) {
+    return parseInt(prev ? (getParamByName(prev, 'page') || 1) : 0, 10) + 1
+  }
+  getMaxCountNumber(prev, next, count, perPage) {
+    return parseInt(count / perPage, 10) + (count % perPage > 0 ? 1 : 0)
+  }
+
   render() {
     const { getList, getList_error } = this.props.state.course
     return (
@@ -58,11 +71,16 @@ class Courses extends React.Component {
               next: 'next',
               previous: 'previous',
               count: 'count',
+              perPage: 4,
             },
             actions: {
               next: this.goto,
               previous: this.goto,
+              gotoNumber: this.gotoNumber,
             },
+            adjacentItem: 2,
+            getCurrentNumber: this.getCurrentNumber,
+            getMaxCountNumber: this.getMaxCountNumber,
           }}
           id='id'
           action={{
