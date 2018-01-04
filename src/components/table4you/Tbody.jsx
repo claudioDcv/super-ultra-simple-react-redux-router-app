@@ -5,11 +5,7 @@ import { dot } from './utils'
 import TrBody from './TrBody'
 
 const resolveId = (fn, element, param, i) => {
-  if (fn) {
-    if (typeof fn === 'function') {
-      return fn(element)
-    }
-  }
+  if (fn) if (typeof fn === 'function') return fn(element)
   return param ? dot(element, param) : i
 }
 
