@@ -57,7 +57,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <Container text>
+      <Container text fluid>
         <Card className='login'>
           <Card.Content header='Login' />
           <Card.Content extra>

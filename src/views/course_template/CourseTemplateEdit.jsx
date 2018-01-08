@@ -70,7 +70,7 @@ class CourseTemplateEdit extends React.Component {
   render() {
     const { item, error } = this.state
     return item ? (
-      <Container text>
+      <Container text fluid>
         <Breadcrumb>
           <Link to="/course-templates" className="section">{_('Course Templates')}</Link>
           <Breadcrumb.Divider />
@@ -93,7 +93,7 @@ class CourseTemplateEdit extends React.Component {
           <Loader inverted>{_('Loading')}</Loader>
         </Dimmer>
       ) : (
-        <Container text>
+        <Container text fluid>
           <Segment inverted color='red' tertiary>
             {error}
           </Segment>

@@ -14,7 +14,7 @@ class Student extends React.Component {
 
   render() {
     return (
-      <Container text>
+      <Container text fluid>
         <Header as='h2'>{_('Students')}</Header>
         Student 1
       </Container>

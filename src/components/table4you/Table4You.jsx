@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Table from './Table'
-import { cleanBlankKeys } from './utils'
+import {cleanBlankKeys, qsToObj } from './utils'
 import { objToQS } from './index'
 
 class Table4You extends React.Component {
@@ -9,7 +9,7 @@ class Table4You extends React.Component {
 		super(props)
 		this.state = {
 			dataset: null,
-			inputQueryString: '',
+			inputQueryString: props.initialQs ? qsToObj(props.initialQs) : '',
 		}
 		this.handlerInputOnChange = this.handlerInputOnChange.bind(this)
 	}
@@ -60,6 +60,7 @@ class Table4You extends React.Component {
 					idFunction,
 					dataset,
 					pagination,
+					inputQueryString: this.state.inputQueryString,
 				}}
 			/>
 		) : (

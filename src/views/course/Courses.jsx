@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Message, Button } from 'semantic-ui-react'
+import { Container, Message, Button, Input } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -20,6 +20,7 @@ class Courses extends React.Component {
 		super(props)
 		this.state = {
 			page: Persist.get('course-page', '1'),
+			qs: Persist.get('qs', ''),
 		}
 
 		this.goto = this.goto.bind(this)
@@ -27,44 +28,51 @@ class Courses extends React.Component {
 	}
 
 	componentDidMount() {
+		const qs = this.state.qs
 		this.props.dispatch(makeActiveLink('/courses'))
 		if (isLogin()) {
-			this.props.dispatch(loadCourses(`page=${this.state.page}`))
+			this.props.dispatch(loadCourses(`page=${this.state.page}${qs ? `&${qs}` : ''}`))
 		}
 	}
 
-	goto = param => {
+	goto = (param, q) => {
 		const p = Persist.set('course-page', getParamByName(param, 'page') || 1)
+		const qs = Persist.set('qs', q.toString() || '')
 		this.setState({ page: p })
-		this.props.dispatch(loadCourses(`page=${p}`))
+		this.props.dispatch(loadCourses(`page=${p}${qs ? `&${qs}` : ''}`))
 	}
 
-	gotoNumber = n => {
+	gotoNumber = (n, q) => {
 		const p = Persist.set('course-page', n)
+		const qs = Persist.set('qs', q.toString() || '')
 		this.setState({ page: p })
-		this.props.dispatch(loadCourses(`page=${p}`))
+		this.props.dispatch(loadCourses(`page=${p}${qs ? `&${qs}` : ''}`))
 	}
 
-	handlerInputQS(queryString) {
-		console.log(queryString, this.state);
-		alert(queryString)
-		// this.gotoNumber(1)
+	handlerInputQS(q) {
+		const qs = Persist.set('qs', q.toString() || '')
+		this.props.dispatch(loadCourses(qs))
 	}
 
 	render() {
 		const { getList, getList_error } = this.props.state.course
-		return <Container text>
+		return <Container text fluid>
 			{getList_error && (
 				<Message negative>
 					<Message.Header>{_('Error has occurred')}</Message.Header>
 					<p>{getList_error} ({this.state.page})</p>
-					<Button onClick={this.goto}>{_('Return to the first page')}</Button>
+					<Button onClick={() => {
+						Persist.remove('qs')
+						Persist.remove('course-page')
+						this.goto('page=1', {})
+					}}>{_('Return to the first page')}</Button>
 				</Message>
 			)}
 			<Table4You
 				className='ui olive selectable table'
 				dataset={getList}
 				nameResultSet='results'
+				initialQs={this.state.qs}
 				pagination={{
 					params: {
 						next: 'next',
@@ -98,24 +106,26 @@ class Courses extends React.Component {
 						title: _('Code'),
 						component: item => <BtnView to={`/courses/${item.id}`}>{item.id}</BtnView>,
 						input: {
-							component: (opt) => <input type="text" name={opt.name} {...opt}/>,
+							component: (opt) => <Input size='mini' type="text" name={opt.name} {...opt}/>,
+							inputProps: { placeholder: 'Ingrese código' },
 						},
 					},
 					{
 						name: 'course_template.name',
 						title: _('Course'),
 						input: {
-							component: (opt) => <input type="text" name={opt.name} {...opt}/>,
-							name: 'course_template__name',
+							component: (opt) => <Input size='mini' type="text" name={opt.name} {...opt}/>,
+							name: 'course_template__name__icontains',
+							inputProps: { placeholder: 'Ingrese nombre' },
 						},
 					},
 					{
 						name: 'carrer.name',
 						title: _('Carrer'),
 						input: {
-							component: (opt) => <input type="text" name={opt.name} {...opt}/>,
-							name: 'carrer__name',
-							inputProps: {},
+							component: (opt) => <Input size='mini' type="text" name={opt.name} {...opt}/>,
+							name: 'carrer__name__icontains',
+							inputProps: { placeholder: 'Ingrese nombre' },
 						},
 					},
 				]}

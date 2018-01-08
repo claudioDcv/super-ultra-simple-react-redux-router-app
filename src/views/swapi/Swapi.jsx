@@ -46,7 +46,7 @@ class Course extends React.Component {
     const { item, error } = this.state
     const image = this.props.state.giphy.get.data
     return image && item ? (
-      <Container text>
+      <Container text fluid>
         <Breadcrumb>
           <Link to="/courses" className="section">{_('Courses')}</Link>
           <Breadcrumb.Divider />
@@ -76,7 +76,7 @@ class Course extends React.Component {
           <Loader inverted>{_('Loading')}</Loader>
         </Dimmer>
       ) : (
-        <Container text>
+        <Container text fluid>
           <Segment inverted color='red' tertiary>
             {error}
           </Segment>

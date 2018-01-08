@@ -25,7 +25,7 @@ class CourseTemplates extends React.Component {
   render() {
     const { getList } = this.props.state.courseTemplate
     return (
-      <Container text>
+      <Container text fluid>
         <Table4You
           className='ui olive selectable table'
           dataset={getList}

@@ -39,6 +39,12 @@ footer {
   visibility: hidden;
 }
 
+table.ui.table thead tr th {
+  vertical-align: top;
+}
+table.ui.table thead tr th input {
+  margin-top: 5px;
+}
 
 footer {
   height: 150px;

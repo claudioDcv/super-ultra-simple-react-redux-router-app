@@ -1,7 +1,15 @@
 import React from 'react'
+import { objToQS } from './index'
+
+
+const queryString = inputQueryString => ({
+    object: inputQueryString,
+    str: objToQS(inputQueryString),
+    toString: () => objToQS(inputQueryString)
+});
 
 const Pagination = props => {
-  const { dataset, pagination } = props
+  const { dataset, pagination, inputQueryString } = props
 
   const adjacentItem = pagination.adjacentItem
   const getCurrentNumber = pagination.getCurrentNumber
@@ -64,10 +72,10 @@ const Pagination = props => {
       className='ui pagination menu'
       onKeyDown={(event) => {
         if (event.keyCode === 37) {
-          pagination.actions.next(dataPrev)
+          pagination.actions.next(dataPrev, queryString(inputQueryString))
         }
         if (event.keyCode === 39) {
-          pagination.actions.next(dataNext)
+          pagination.actions.next(dataNext, queryString(inputQueryString))
         }
       }}
     >
@@ -75,7 +83,7 @@ const Pagination = props => {
         disabled={previousIsDisabled()}
         className={`item${previousIsDisabled() ? ' disabled' : ''}`}
         onClick={() => {
-          pagination.actions.previous(dataPrev)
+          pagination.actions.previous(dataPrev, queryString(inputQueryString))
         }}
       >
         <i aria-hidden="true" className="chevron left icon" />
@@ -85,7 +93,7 @@ const Pagination = props => {
           key={e.n}
           className={`item ${e.current && ' active'}`}
           onClick={() => {
-            pagination.actions.gotoNumber(e.n)
+            pagination.actions.gotoNumber(e.n, queryString(inputQueryString))
           }}
         >{e.n}</button>
       ))}
@@ -93,7 +101,7 @@ const Pagination = props => {
         disabled={nextIsDisabled()}
         className={`item${nextIsDisabled() ? ' disabled' : ''}`}
         onClick={() => {
-          pagination.actions.next(dataNext)
+          pagination.actions.next(dataNext, queryString(inputQueryString))
         }}
       >
         <i aria-hidden="true" className="chevron right icon" />

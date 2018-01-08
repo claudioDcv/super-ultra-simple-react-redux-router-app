@@ -14,7 +14,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <Container text>
+      <Container text fluid>
         <Header as='h2'>{_('Home')}</Header>
         <p>Bienvenido al sistema de Evaluación por Competencias</p>
       </Container>

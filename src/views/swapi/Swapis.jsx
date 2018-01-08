@@ -49,7 +49,7 @@ class Courses extends React.Component {
   render() {
     const { list } = this.props.state.course
     return (
-      <Container text>
+      <Container text fluid>
         <Breadcrumb>
           <Breadcrumb.Section active>{_('Courses')}</Breadcrumb.Section>
         </Breadcrumb>
