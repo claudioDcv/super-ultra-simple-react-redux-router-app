@@ -22,9 +22,7 @@ class Courses extends React.Component {
 			page: Persist.get('course-page', '1'),
 			qs: Persist.get('qs', ''),
 		}
-
-		this.goto = this.goto.bind(this)
-		this.handlerInputQS = this.handlerInputQS.bind(this)
+		this.querySetAction = this.querySetAction.bind(this)
 	}
 
 	componentDidMount() {
@@ -35,23 +33,30 @@ class Courses extends React.Component {
 		}
 	}
 
-	goto = (param, q) => {
-		const p = Persist.set('course-page', getParamByName(param, 'page') || 1)
-		const qs = Persist.set('qs', q.toString() || '')
-		this.setState({ page: p })
-		this.props.dispatch(loadCourses(`page=${p}${qs ? `&${qs}` : ''}`))
-	}
-
-	gotoNumber = (n, q) => {
-		const p = Persist.set('course-page', n)
-		const qs = Persist.set('qs', q.toString() || '')
-		this.setState({ page: p })
-		this.props.dispatch(loadCourses(`page=${p}${qs ? `&${qs}` : ''}`))
-	}
-
-	handlerInputQS(q) {
-		const qs = Persist.set('qs', q.toString() || '')
-		this.props.dispatch(loadCourses(qs))
+	querySetAction(obj) {
+		const p = obj.pagination.number
+		const qs = obj.qs.toString()
+		const qsP = `${p ? `&page=${p}` : ''}${qs ? `&${qs}` : ''}`
+		const ordering = obj.ordering ? `&ordering=${obj.ordering}` : ''
+		switch (obj.type) {
+			case 'ORDERING':
+				this.props.dispatch(loadCourses(`${ordering}${qsP}`))
+			break;
+			case 'CHANGE_PAGE':
+				this.props.dispatch(loadCourses(`${ordering}${qsP}`))
+			break;
+			case 'NEXT_PAGE':
+				const page = getParamByName(obj.pagination.dataNext, 'page') || 1
+				this.props.dispatch(loadCourses(`page=${page}${ordering}&${qs}`))
+			break;
+			case 'PREV_PAGE':
+				const pagePrev = getParamByName(obj.pagination.dataPrev, 'page') || 1
+				this.props.dispatch(loadCourses(`page=${pagePrev}${ordering}&${qs}`))
+			break;
+			case 'INPUT':
+				this.props.dispatch(loadCourses(`${ordering}&${qs}`))
+			break;
+		}
 	}
 
 	render() {
@@ -73,6 +78,14 @@ class Courses extends React.Component {
 				dataset={getList}
 				nameResultSet='results'
 				initialQs={this.state.qs}
+				onChange={this.querySetAction}
+				orderingButton={{
+					component: e => (
+						<Button size='mini' onClick={() => e.onClick(e.element.ordering)}>
+							{e.element.title}
+						</Button>
+					),
+				}}
 				pagination={{
 					params: {
 						next: 'next',
@@ -80,11 +93,8 @@ class Courses extends React.Component {
 						count: 'count',
 						perPage: 4,
 					},
-					actions: {
-						next: this.goto,
-						previous: this.goto,
-						gotoNumber: this.gotoNumber,
-					},
+					className: 'ui pagination menu mini',
+					props: {},
 					adjacentItem: 4,
 					getCurrentNumber: getCurrentNumber,
 					getMaxCountNumber: getMaxCountNumber,
@@ -99,7 +109,6 @@ class Courses extends React.Component {
 						</div>
 					),
 				}}
-				handlerInputQS={this.handlerInputQS}
 				columns={[
 					{
 						name: 'id',
@@ -109,6 +118,7 @@ class Courses extends React.Component {
 							component: (opt) => <Input size='mini' type="text" name={opt.name} {...opt}/>,
 							inputProps: { placeholder: 'Ingrese código' },
 						},
+						ordering: 'id',
 					},
 					{
 						name: 'course_template.name',
@@ -118,6 +128,7 @@ class Courses extends React.Component {
 							name: 'course_template__name__icontains',
 							inputProps: { placeholder: 'Ingrese nombre' },
 						},
+						ordering: 'course_template__name',
 					},
 					{
 						name: 'carrer.name',

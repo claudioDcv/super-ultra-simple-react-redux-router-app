@@ -4,12 +4,28 @@ import Tbody from './Tbody'
 import Pagination from './Pagination'
 
 const Table = props => {
-  const { dataset, action, columns, className, nameResultSet, id, idFunction, pagination, handlerInputOnChange, inputQueryString } = props.options
+  const {
+      dataset,
+      action,
+      columns,
+      className,
+      nameResultSet,
+      id,
+      idFunction,
+      pagination,
+      handlerInputOnChange,
+      inputQueryString,
+      onChangeOrdering,
+      onChangePagination,
+      orderingButton,
+  } = props.options
+
   const prefix = props.options.prefix || 'Table4You'
+
   return (
     <div className={`${prefix} table4you table4you-container`}>
       <table className={`${prefix} ${className}`}>
-        <Thead options={{ action, columns, handlerInputOnChange, inputQueryString }} />
+        <Thead options={{ orderingButton, action, columns, handlerInputOnChange, inputQueryString, onChangeOrdering }} />
         <Tbody
           options={{
             action,
@@ -22,7 +38,12 @@ const Table = props => {
         />
       </table>
       {pagination && <div className={`${prefix} table4you table4you-pagination`}>
-        <Pagination dataset={dataset} pagination={pagination} inputQueryString={inputQueryString} />
+        <Pagination
+            dataset={dataset}
+            pagination={pagination}
+            inputQueryString={inputQueryString}
+            onChangePagination={onChangePagination}
+        />
       </div>}
     </div>
   )

@@ -1,23 +1,15 @@
 import React from 'react'
-import { objToQS } from './index'
-
-
-const queryString = inputQueryString => ({
-    object: inputQueryString,
-    str: objToQS(inputQueryString),
-    toString: () => objToQS(inputQueryString)
-});
 
 const Pagination = props => {
-  const { dataset, pagination, inputQueryString } = props
+  const { dataset, pagination, onChangePagination } = props
 
   const adjacentItem = pagination.adjacentItem
   const getCurrentNumber = pagination.getCurrentNumber
   const getMaxCountNumber = pagination.getMaxCountNumber
 
 
-  const previousIsDisabled = () => !(pagination.actions.previous && dataset[pagination.params.previous]);
-  const nextIsDisabled = () => !(pagination.actions.next && dataset[pagination.params.next]);
+  const previousIsDisabled = () => !dataset[pagination.params.previous];
+  const nextIsDisabled = () => !dataset[pagination.params.next];
 
   const dataPrev = dataset[pagination.params.previous]
   const dataNext = dataset[pagination.params.next]
@@ -69,21 +61,31 @@ const Pagination = props => {
 
   return (
     <div
-      className='ui pagination menu'
+      className={pagination.className || 'ui pagination menu'}
       onKeyDown={(event) => {
         if (event.keyCode === 37) {
-          pagination.actions.next(dataPrev, queryString(inputQueryString))
+          onChangePagination('NEXT_PAGE', {
+            dataPrev: dataPrev,
+            dataNext,
+          })
         }
         if (event.keyCode === 39) {
-          pagination.actions.next(dataNext, queryString(inputQueryString))
+          onChangePagination('PREV_PAGE', {
+            dataPrev: dataPrev,
+            dataNext,
+          })
         }
       }}
+      {...pagination.props}
     >
       <button
         disabled={previousIsDisabled()}
         className={`item${previousIsDisabled() ? ' disabled' : ''}`}
         onClick={() => {
-          pagination.actions.previous(dataPrev, queryString(inputQueryString))
+          onChangePagination('PREV_PAGE', {
+            dataPrev: dataPrev,
+            dataNext,
+          })
         }}
       >
         <i aria-hidden="true" className="chevron left icon" />
@@ -93,7 +95,11 @@ const Pagination = props => {
           key={e.n}
           className={`item ${e.current && ' active'}`}
           onClick={() => {
-            pagination.actions.gotoNumber(e.n, queryString(inputQueryString))
+            onChangePagination('CHANGE_PAGE', {
+              number: e.n,
+              dataNext,
+              dataPrev,
+            })
           }}
         >{e.n}</button>
       ))}
@@ -101,7 +107,10 @@ const Pagination = props => {
         disabled={nextIsDisabled()}
         className={`item${nextIsDisabled() ? ' disabled' : ''}`}
         onClick={() => {
-          pagination.actions.next(dataNext, queryString(inputQueryString))
+          onChangePagination('NEXT_PAGE', {
+            dataPrev: dataPrev,
+            dataNext,
+          })
         }}
       >
         <i aria-hidden="true" className="chevron right icon" />

@@ -34,4 +34,6 @@ export const cleanBlankKeys = obj => {
   return o
 }
 
-export const qsToObj = qs => qs ? JSON.parse('{"' + decodeURI(qs.replace(/&/g, "\",\"").replace(/=/g,"\":\"")) + '"}') : {}
+export const qsToObj = (qs = null) => {
+  return qs ? JSON.parse('{"' + decodeURI(qs.replace(/&/g, "\",\"").replace(/=/g,"\":\"")) + '"}') : {}
+}

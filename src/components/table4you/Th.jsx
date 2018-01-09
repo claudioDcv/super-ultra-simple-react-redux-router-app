@@ -1,5 +1,17 @@
 import React from 'react'
 
+
+const ordering = (element, onClick, orderingButton) => {
+
+    if (!orderingButton) return element.title || element.name
+    if (!orderingButton.component || !element.ordering) return element.title || element.name
+
+    return orderingButton.component({
+        element,
+        onClick,
+    })
+}
+
 const componentInput = (element, onChange, inputQueryString) => {
 
   if (!element.input) return null
@@ -19,13 +31,13 @@ const componentInput = (element, onChange, inputQueryString) => {
 }
 
 const Th = props => {
-  const { element, onChange, inputQueryString } = props
+  const { element, onChange, inputQueryString, onChangeOrdering, orderingButton } = props
   return (
     <th
       className={element.titleClassName || null}
       style={element.titleStyle || null}
     >
-      {element.title || element.name}
+      {ordering(element, onChangeOrdering, orderingButton)}
       {componentInput(element, onChange, inputQueryString)}
     </th>
   )
